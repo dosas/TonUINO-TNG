@@ -138,6 +138,8 @@ void Tonuino::playFolder() {
     LOG(play_log, s_info, F("Album"));
     LOG(play_log, s_info, myFolder->special, str_bis() , myFolder->special2);
     mp3.enqueueTrack(myFolder->folder, myFolder->special, myFolder->special2);
+    if (myFolder->mode == pmode_t::album)
+      mp3.backwardQueue();
     break;
 
   case pmode_t::party:

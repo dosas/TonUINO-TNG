@@ -29,6 +29,12 @@ public:
       swap(c[i], c[j]);
     }
   }
+  void backward() {
+    // Queue rueckwaerts
+    for (uint8_t i = 0; i < s/2; ++i) {
+      swap(c[i], c[s-i-1]);
+    }
+  }
   // Iterators
   T *begin() { return c.begin(); }
   const T *begin() const { return c.begin(); }

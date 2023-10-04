@@ -140,6 +140,13 @@ void Mp3::shuffleQueue() {
     LOG(mp3_log, s_info, q.get(i), str_Space(), lf_no);
   LOG(mp3_log, s_info, str_Space());
 }
+void Mp3::backwardQueue() {
+  q.backward();
+  LOG(mp3_log, s_info, F("backward "), lf_no);
+  for (uint8_t i = 0; i<q.size(); ++i)
+    LOG(mp3_log, s_info, q.get(i), str_Space(), lf_no);
+  LOG(mp3_log, s_info, str_Space());
+}
 void Mp3::enqueueMp3FolderTrack(uint16_t track, bool playAfter) {
   LOG(mp3_log, s_info, F("enqueue mp3 "), track, str_Space(), playAfter);
   clearFolderQueue();

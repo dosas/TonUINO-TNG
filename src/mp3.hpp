@@ -180,6 +180,7 @@ public:
   void enqueueTrack(uint8_t folder, uint8_t track);
   void setEndless() { endless = true; }
   void shuffleQueue();
+  void backwardQueue();
   void enqueueMp3FolderTrack(uint16_t  track, bool playAfter = false);
   void enqueueMp3FolderTrack(mp3Tracks track, bool playAfter = false);
   void playCurrent();
