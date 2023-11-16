@@ -832,6 +832,9 @@ void Admin_Entry::entry() {
   tonuino.resetActiveModifier();
 
   numberOfOptions   = 13;
+#ifdef NEO_RING
+  numberOfOptions  +=  1;
+#endif
   startMessage      = lastCurrentValue == 0 ? mp3Tracks::t_900_admin : mp3Tracks::t_919_continue_admin;
   messageOffset     = mp3Tracks::t_900_admin;
   preview           = false;
@@ -925,6 +928,13 @@ void Admin_Entry::react(command_e const &cmd_e) {
              LOG(state_log, s_debug, str_Admin_Entry(), str_to(), str_Admin_PauseIfCardRemoved());
              transit<Admin_PauseIfCardRemoved>();
              return;
+#ifdef NEO_RING
+    case 14: // NeoPixelRing number of LED
+             LOG(state_log, s_debug, str_Admin_Entry(), str_to(), str_Admin_SimpleSetting());
+             Admin_SimpleSetting::type = Admin_SimpleSetting::neoRing;
+             transit<Admin_SimpleSetting>();
+             return;
+#endif
     }
   }
 }
@@ -992,14 +1002,23 @@ void Admin_SimpleSetting::entry() {
   numberOfOptions   = type == maxVolume  ? 30 - settings.minVolume                        :
                       type == minVolume  ? settings.maxVolume - 1                         :
                       type == initVolume ? settings.maxVolume - settings.minVolume + 1    :
+#ifdef NEO_RING
+                      type == neoRing    ? 24                                             :
+#endif
                       type == eq         ? 6                                              : 0;
   startMessage      = type == maxVolume  ? mp3Tracks::t_930_max_volume_intro              :
                       type == minVolume  ? mp3Tracks::t_931_min_volume_into               :
                       type == initVolume ? mp3Tracks::t_932_init_volume_into              :
+#ifdef NEO_RING
+                      type == neoRing    ? mp3Tracks::t_932_init_volume_into              :
+#endif
                       type == eq         ? mp3Tracks::t_920_eq_intro                      : mp3Tracks::t_0;
   messageOffset     = type == maxVolume  ? static_cast<mp3Tracks>(settings.minVolume)     :
                       type == minVolume  ? mp3Tracks::t_0                                 :
                       type == initVolume ? static_cast<mp3Tracks>(settings.minVolume - 1) :
+#ifdef NEO_RING
+                      type == neoRing    ? mp3Tracks::t_0                                 :
+#endif
                       type == eq         ? mp3Tracks::t_920_eq_intro                      : mp3Tracks::t_0;
   preview           = false;
   previewFromFolder = 0;
@@ -1009,6 +1028,9 @@ void Admin_SimpleSetting::entry() {
   currentValue      = type == maxVolume  ? settings.maxVolume - settings.minVolume        :
                       type == minVolume  ? settings.minVolume                             :
                       type == initVolume ? settings.initVolume - settings.minVolume + 1   :
+#ifdef NEO_RING
+                      type == neoRing    ? settings.neoPixelNumber                        :
+#endif
                       type == eq         ? settings.eq                                    : 0;
 }
 
@@ -1028,6 +1050,9 @@ void Admin_SimpleSetting::react(command_e const &cmd_e) {
     case maxVolume : settings.maxVolume  = currentValue + settings.minVolume    ; break;
     case minVolume : settings.minVolume  = currentValue                         ; break;
     case initVolume: settings.initVolume = currentValue + settings.minVolume - 1; break;
+#ifdef NEO_RING
+    case neoRing   : settings.neoPixelNumber = currentValue                     ; break;
+#endif
     case eq        : settings.eq = currentValue;
                      mp3.setEq(static_cast<DfMp3_Eq>(settings.eq - 1))          ; break;
 

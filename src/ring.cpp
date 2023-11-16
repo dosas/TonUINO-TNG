@@ -4,8 +4,9 @@
 
 #include <limits.h>
 
-Ring::Ring()
-: strip(neoPixelNumber, neoPixelRingPin, NEO_GRB + NEO_KHZ800)
+Ring::Ring(const Settings& settings)
+: settings(settings)
+, strip(24, neoPixelRingPin, NEO_GRB + NEO_KHZ800)
 {}
 
 void Ring::init() {
@@ -23,13 +24,13 @@ void Ring::pulse(const color_t color) {
 
 // Rainbow cycle along whole strip.
 void Ring::rainbow(uint8_t incr){
-  setAll([this](uint8_t i){ return wheel((255/neoPixelNumber * (neoPixelNumber-1-i) + pixelCycle) & 255); });
+  setAll([this](uint8_t i){ return wheel((255/settings.neoPixelNumber * (settings.neoPixelNumber-1-i) + pixelCycle) & 255); });
 
   pixelCycle += incr;
 }
 
 void Ring::setAll(const color_t color) {
-  for (uint8_t i = 0; i < neoPixelNumber; i++) {
+  for (uint8_t i = 0; i < settings.neoPixelNumber; i++) {
     setPixel(i, color);
   }
   showStrip();

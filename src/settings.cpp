@@ -53,7 +53,7 @@ void Settings::resetSettings() {
   minVolume            =  5;
   initVolume           = 15;
   eq                   =  1;
-  dummy                =  0;
+  neoPixelNumber       = 24;
   standbyTimer         =  0;
   invertVolumeButtons  =  1;
   shortCuts[0]         =  { 0, pmode_t::none, 0, 0 };
@@ -90,6 +90,12 @@ void Settings::loadSettingsFromFlash() {
   if (cookie != cardCookie)
     resetSettings();
   //migrateSettings(version);
+#ifdef NEO_RING
+  if ((neoPixelNumber < 1) || (neoPixelNumber > 24)) {
+    neoPixelNumber = 24;
+    writeSettingsToFlash();
+  }
+#endif
 
   LOG(settings_log, s_info, F("Ver:"), version);
   LOG(settings_log, s_info, F("Vol:"), maxVolume, F(" "), minVolume, F(" "), initVolume);
@@ -99,6 +105,9 @@ void Settings::loadSettingsFromFlash() {
   LOG(settings_log, s_info, F("AL:" ), adminMenuLocked);
   LOG(settings_log, s_info, F("AP:" ), adminMenuPin[0], adminMenuPin[1], adminMenuPin[2], adminMenuPin[3]);
   LOG(settings_log, s_info, F("PCR:"), pauseWhenCardRemoved);
+#ifdef NEO_RING
+  LOG(settings_log, s_info, F("NPR:"), neoPixelNumber);
+#endif
 }
 
 void Settings::writeFolderSettingToFlash(uint8_t folder, uint8_t track) {

@@ -95,7 +95,7 @@ private:
                                            };
   Chip_card            chip_card           {mp3};
 #ifdef NEO_RING
-  Ring                 ring                {};
+  Ring                 ring                {settings};
 #endif
 
   friend class Base;

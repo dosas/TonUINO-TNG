@@ -274,6 +274,9 @@ public:
     minVolume,
     initVolume,
     eq,
+#ifdef NEO_RING
+    neoRing,
+#endif
   };
   static Type type;
 };

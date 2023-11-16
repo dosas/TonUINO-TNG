@@ -37,7 +37,7 @@ struct Settings {
   uint8_t     minVolume;
   uint8_t     initVolume;
   uint8_t     eq;
-  uint8_t     dummy;
+  uint8_t     neoPixelNumber;
   uint32_t    standbyTimer;
   uint8_t     invertVolumeButtons;
   shortCuts_t shortCuts;

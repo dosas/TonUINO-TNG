@@ -4,6 +4,7 @@
 #include <Arduino.h>
 
 #include "constants.hpp"
+#include "settings.hpp"
 #include "array.hpp"
 
 #include <Adafruit_NeoPixel.h>
@@ -14,7 +15,7 @@ inline constexpr uint8_t  brightness_init  = 16;
 
 class Ring {
 public:
-  Ring();
+  Ring(const Settings& settings);
 
   void init();
 
@@ -66,11 +67,12 @@ private:
   // for rainbow()
   uint8_t pixelCycle { 0 };  // Pattern Pixel Cycle
 
+  const Settings& settings;
   Adafruit_NeoPixel strip;
 };
 
 void Ring::setAll(auto&& f) {
-  for (uint8_t i = 0; i < neoPixelNumber; ++i) {
+  for (uint8_t i = 0; i < settings.neoPixelNumber; ++i) {
     setPixel(i, f(i));
   }
   showStrip();

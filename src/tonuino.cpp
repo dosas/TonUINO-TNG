@@ -42,13 +42,13 @@ void Tonuino::setup() {
   digitalWrite(usbAccessPin, getLevel(usbAccessPinType, level::inactive));
 #endif
 
+  // load Settings from EEPROM
+  settings.loadSettingsFromFlash();
+
 #ifdef NEO_RING
   ring.init();
   ring.call_on_startup();
 #endif
-
-  // load Settings from EEPROM
-  settings.loadSettingsFromFlash();
 
   // DFPlayer Mini initialisieren
   mp3.begin();
